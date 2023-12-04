@@ -37,8 +37,6 @@ fn main () {
             if is_valid {
                 sum += curr_num;
             }
-            curr_num = 0;
-            is_valid = false;
         }
     }
 
