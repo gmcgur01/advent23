@@ -52,37 +52,17 @@ fn card_freq(hand: &String) -> Vec<u32> {
 
 fn cmp_hand(hand1: &String, hand2: &String) -> Ordering {
 
-    println!("--------");
-    println!("{}", hand1);
-    println!("{}", hand2);
-
     let hand1_freq = card_freq(hand1);
     let hand2_freq = card_freq(hand2);
 
     // handles cases where one hand has more of a kind than another
     if hand1_freq[0] != hand2_freq[0] {
-        let ret = hand1_freq[0].cmp(&hand2_freq[0]);
-        println!("first check: {:?}", ret);
-        return ret;
+        return hand1_freq[0].cmp(&hand2_freq[0]);
     }
 
     // handles full house and two pair
     if hand1_freq[1] != hand2_freq[1] {
-        let ret = hand1_freq[1].cmp(&hand2_freq[1]);
-        println!("second check: {:?}", ret);
-        return ret;
-    }
-
-    // handle high card
-    if hand1_freq[0] == 1 {
-        let high_card1 = high_card(hand1);
-        let high_card2 = high_card(hand2);
-
-        if high_card1 != high_card2 {
-            let ret = high_card1.cmp(&high_card2);
-            println!("third check {:?}", ret);
-            return ret;
-        }  
+        return hand1_freq[1].cmp(&hand2_freq[1]);
     }
     
     // handle second ordering rule
@@ -92,14 +72,9 @@ fn cmp_hand(hand1: &String, hand2: &String) -> Ordering {
 
         match val1.cmp(&val2) {
             Ordering::Equal => (),
-            other => {
-                println!("forth check {:?}", other);
-                return other;
-            }
+            other => return other
         }
     }
-
-    println!("fifth check {:?}", Ordering::Equal);
 
     return Ordering::Equal;
 } 
@@ -121,16 +96,4 @@ fn card_to_val (card: char) -> u32 {
         'A' => 14,
         _ => 0
     }
-}
-
-fn high_card(hand: &String) -> u32 {
-    let mut max: u32 = 0;
-
-    for c in hand.chars() {
-        let curr_card = card_to_val(c);
-        if curr_card > max {
-            max = curr_card;
-        }
-    }
-    return max;
 }
